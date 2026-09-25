@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>30-Day Tactical & Survival Skills Program</title>
+  <style>
+    :root {
+      --bg-main: #0c0f12;
+      --bg-card: #161b22;
+      --bg-card-hover: #1f2631;
+      --border-color: #2a3441;
+      --text-main: #f0f6fc;
+      --text-muted: #8b949e;
+      --accent-orange: #ff5500;
+      --accent-orange-glow: rgba(255, 85, 0, 0.25);
+      --accent-green: #00e676;
+      --accent-green-glow: rgba(0, 230, 118, 0.2);
+      --font-mono: 'Courier New', Courier, monospace;
+      --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      line-height: 1.5;
+      padding-bottom: 60px;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 20px 16px;
+    }
+
+    /* HEADER & DASHBOARD */
+    header {
+      border-bottom: 2px solid var(--border-color);
+      padding-bottom: 20px;
+      margin-bottom: 24px;
+    }
+
+    .badge {
+      display: inline-block;
+      background: var(--accent-orange);
+      color: #000;
+      font-weight: 800;
+      font-size: 0.75rem;
+      padding: 2px 8px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      border-radius: 2px;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-weight: 900;
+      margin-bottom: 16px;
+    }
+
+    .progress-container {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 16px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+
+    .progress-header {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--font-mono);
+      font-size: 0.9rem;
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    .progress-bar-bg {
+      background: #000;
+      height: 14px;
+      border-radius: 2px;
+      overflow: hidden;
+      border: 1px solid var(--border-color);
+    }
+
+    .progress-bar-fill {
+      background: var(--accent-orange);
+      height: 100%;
+      width: 0%;
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 0 10px var(--accent-orange-glow);
+    }
+
+    /* CORE PILLARS */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 10px;
+      margin-bottom: 30px;
+    }
+
+    .pillar-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 10px 12px;
+      border-left: 3px solid var(--accent-orange);
+      font-size: 0.85rem;
+    }
+
+    .pillar-card strong {
+      display: block;
+      color: var(--text-main);
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+    }
+
+    .pillar-card span {
+      color: var(--text-muted);
+      font-size: 0.8rem;
+    }
+
+    /* GRID SELECTOR */
+    .section-title {
+      font-size: 1.1rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::before {
+      content: '';
+      display: inline-block;
+      width: 8px;
+      height: 16px;
+      background: var(--accent-orange);
+    }
+
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+      gap: 8px;
+      margin-bottom: 30px;
+    }
+
+    .day-btn {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 12px 0;
+      text-align: center;
+      font-family: var(--font-mono);
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .day-btn:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--text-muted);
+    }
+
+    .day-btn.active {
+      border-color: var(--accent-orange);
+      background: var(--bg-card-hover);
+      box-shadow: 0 0 8px var(--accent-orange-glow);
+    }
+
+    .day-btn.completed {
+      border-color: var(--accent-green);
+      color: var(--accent-green);
+    }
+
+    .day-btn.completed::after {
+      content: '✓';
+      position: absolute;
+      top: 2px;
+      right: 4px;
+      font-size: 0.65rem;
+    }
+
+    /* MAIN VIEW SPLIT */
+    .main-content {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 20px;
+    }
+
+    @media (max-width: 800px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* DETAIL VIEW */
+    .detail-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 24px;
+      border-radius: 4px;
+    }
+
+    .detail-header {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 16px;
+      margin-bottom: 20px;
+    }
+
+    .phase-tag {
+      font-family: var(--font-mono);
+      color: var(--accent-orange);
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      font-weight: bold;
+    }
+
+    .detail-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      margin: 4px 0;
+    }
+
+    .focus-area {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* TASKS */
+    .task-group {
+      margin-bottom: 20px;
+    }
+
+    .task-category {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+      font-weight: bold;
+    }
+
+    .task-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+
+    .task-item:hover {
+      background: rgba(255,255,255,0.03);
+    }
+
+    .task-item input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid var(--text-muted);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+      margin-top: 2px;
+      flex-shrink: 0;
+      position: relative;
+    }
+
+    .task-item input[type="checkbox"]:checked {
+      background-color: var(--accent-green);
+      border-color: var(--accent-green);
+    }
+
+    .task-item input[type="checkbox"]:checked::after {
+      content: '✓';
+      position: absolute;
+      color: #000;
+      font-size: 12px;
+      font-weight: bold;
+      top: -2px;
+      left: 3px;
+    }
+
+    .task-label {
+      font-size: 0.95rem;
+      user-select: none;
+    }
+
+    .task-item.completed .task-label {
+      text-decoration: line-through;
+      color: var(--text-muted);
+    }
+
+    /* BUTTONS */
+    .action-btn {
+      width: 100%;
+      background: var(--accent-orange);
+      color: #000;
+      border: none;
+      padding: 14px;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin-top: 10px;
+      transition: opacity 0.2s ease;
+    }
+
+    .action-btn:hover {
+      opacity: 0.9;
+    }
+
+    .action-btn.completed-state {
+      background: var(--accent-green);
+    }
+
+    /* UTILITIES / TIMER / EMBED */
+    .utility-sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .utility-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      padding: 20px;
+      border-radius: 4px;
+      height: fit-content;
+    }
+
+    .timer-display {
+      font-family: var(--font-mono);
+      font-size: 2.8rem;
+      text-align: center;
+      background: #000;
+      border: 1px solid var(--border-color);
+      padding: 15px 0;
+      margin: 15px 0;
+      color: var(--accent-orange);
+      border-radius: 4px;
+      letter-spacing: 2px;
+    }
+
+    .timer-presets {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 12px;
+    }
+
+    .preset-btn {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 6px;
+      font-size: 0.75rem;
+      cursor: pointer;
+      font-family: var(--font-mono);
+    }
+
+    .preset-btn:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .timer-controls {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 8px;
+    }
+
+    .btn-secondary {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-main);
+      padding: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+
+    .btn-secondary:hover {
+      background: var(--bg-card-hover);
+    }
+
+    .btn-primary-small {
+      background: var(--text-main);
+      color: #000;
+      border: none;
+      padding: 10px;
+      font-weight: bold;
+      cursor: pointer;
+      text-transform: uppercase;
+      font-size: 0.8rem;
+    }
+
+    .btn-reset-data {
+      margin-top: 20px;
+      background: transparent;
+      border: none;
+      color: #ff4444;
+      font-size: 0.75rem;
+      text-decoration: underline;
+      cursor: pointer;
+      width: 100%;
+      text-align: center;
+    }
+
+    /* GIPHY EMBED CONTAINER */
+    .giphy-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .giphy-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      background: #000;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      padding: 8px;
+    }
+
+    .giphy-embed {
+      max-width: 100%;
+      border-radius: 2px;
+    }
+
+    .giphy-link {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+      text-decoration: none;
+    }
+
+    .giphy-link:hover {
+      color: var(--accent-orange);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <span class="badge">TACTICAL OPERATOR PROGRAM</span>
+      <h1>30-Day Tactical & Survival Skills</h1>
+
+      <div class="progress-container">
+        <div class="progress-header">
+          <span id="progress-text">Day 1 of 30</span>
+          <span id="progress-percent">0% Complete</span>
+        </div>
+        <div class="progress-bar-bg">
+          <div class="progress-bar-fill" id="progress-fill"></div>
+        </div>
+      </div>
+
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <strong>1. Combat</strong>
+          <span>Striking & Grappling</span>
+        </div>
+        <div class="pillar-card">
+          <strong>2. Conditioning</strong>
+          <span>Work Capacity & Output</span>
+        </div>
+        <div class="pillar-card">
+          <strong>3. Navigation</strong>
+          <span>Landcraft & Orienting</span>
+        </div>
+        <div class="pillar-card">
+          <strong>4. First Aid</strong>
+          <span>Trauma & Survival Prep</span>
+        </div>
+        <div class="pillar-card">
+          <strong>5. Mindset</strong>
+          <span>Situational Awareness</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="section-title">Schedule Selector</div>
+    <div class="calendar-grid" id="calendar-grid"></div>
+
+    <div class="main-content">
+      <!-- CORE DETAIL VIEW -->
+      <div class="detail-card">
+        <div class="detail-header">
+          <div class="phase-tag" id="day-phase">Phase I: Foundation</div>
+          <div class="detail-title" id="day-title">Day 1: Base Mechanics</div>
+          <div class="focus-area" id="day-focus">Focus: Stance, Work Capacity, Situational Scanning</div>
+        </div>
+
+        <div id="tasks-container"></div>
+
+        <button class="action-btn" id="complete-day-btn" onclick="toggleCompleteDay()">Mark Day Complete</button>
+      </div>
+
+      <!-- UTILITIES SIDEBAR -->
+      <div class="utility-sidebar">
+        <!-- TIMER -->
+        <div class="utility-card">
+          <div class="section-title" style="margin-bottom:0;">Tactical Timer</div>
+          <div class="timer-display" id="timer-display">02:00</div>
+
+          <div class="timer-presets">
+            <button class="preset-btn" onclick="setTimer(120)">2m Round</button>
+            <button class="preset-btn" onclick="setTimer(180)">3m Shower</button>
+            <button class="preset-btn" onclick="setTimer(300)">5m Rest</button>
+          </div>
+
+          <div class="timer-controls">
+            <button class="btn-primary-small" id="timer-start-btn" onclick="toggleTimer()">Start</button>
+            <button class="btn-secondary" onclick="resetTimer()">Reset</button>
+          </div>
+
+          <button class="btn-reset-data" onclick="resetAllProgress()">Reset All Progress Data</button>
+        </div>
+
+        <!-- GIPHY VISUAL MOTIVATION -->
+        <div class="utility-card giphy-card">
+          <div class="section-title" style="margin-bottom: 12px; width: 100%;">Visual Focus</div>
+          <div class="giphy-container">
+            <iframe src="https://giphy.com/embed/ZuHYyLfbWpPeo" width="310" height="480" frameBorder="0" class="giphy-embed" allowFullScreen></iframe>
+          </div>
+          <p><a href="https://giphy.com/gifs/super-stages-saiyan-ZuHYyLfbWpPeo" class="giphy-link" target="_blank">via GIPHY</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // DATA ENGINE: Full 30-Day Program
+    const programData = [
+      // WEEK 1: FOUNDATION
+      { day: 1, week: 1, phase: "Week 1: Foundation", title: "Base Mechanics", focus: "Footwork & Baseline Output", tasks: [
+        { cat: "Combat", text: "Lead stance, footwork (step-and-slide forward/back/sides). 100 reps each direction." },
+        { cat: "Conditioning", text: "3 Rounds: 15 push-ups, 20 bodyweight squats, 30-sec plank." },
+        { cat: "Mindset", text: "OODA Loop concept. Name 5 distinct emergency exits/items in every room you enter today." }
+      ]},
+      { day: 2, week: 1, phase: "Week 1: Foundation", title: "Straight Strikes & Core", focus: "Jab/Cross Mechanics & Core Rigidity", tasks: [
+        { cat: "Combat", text: "Straight punches (Jab-Cross mechanics). Shadowbox 3 x 2-minute rounds." },
+        { cat: "Conditioning", text: "4 Rounds: 20 mountain climbers, 15 leg raises, 40-sec hollow body hold." },
+        { cat: "First Aid", text: "Study Direct Pressure & Elevation for severe bleeding. Practice applying a pressure dressing." }
+      ]},
+      { day: 3, week: 1, phase: "Week 1: Foundation", title: "Navigation Basics", focus: "Map Reading & Cardinal Directions", tasks: [
+        { cat: "Navigation", text: "Learn base map symbols, contours, and orient a physical map to true north." },
+        { cat: "Conditioning", text: "30-minute steady-state run or brisk weighted pack walk (15-20 lbs)." },
+        { cat: "Mindset", text: "Practice 4-4-4-4 Box Breathing for 5 minutes post-workout." }
+      ]},
+      { day: 4, week: 1, phase: "Week 1: Foundation", title: "Base Defense & Grip", focus: "Guards, Blocks & Grip Strength", tasks: [
+        { cat: "Combat", text: "High guard defensive positioning + slip drills. 100 slips total." },
+        { cat: "Conditioning", text: "Grip circuit: 3 sets of max-time dead hang, 20 towel wrings." },
+        { cat: "Survival Prep", text: "Audit personal Everyday Carry (EDC). Streamline tools and light sources." }
+      ]},
+      { day: 5, week: 1, phase: "Week 1: Foundation", title: "Lower Body Striking", focus: "Low Kicks & Sprawls", tasks: [
+        { cat: "Combat", text: "Low kick mechanics + defensive sprawl drills. 50 sprawls." },
+        { cat: "Conditioning", text: "5 Rounds: 10 lunges per leg, 10 burpees, 30-sec wall sit." },
+        { cat: "Mindset", text: "Baseline situational awareness walk: Note 3 vehicle license plates & physical descriptions of 3 strangers." }
+      ]},
+      { day: 6, week: 1, phase: "Week 1: Foundation", title: "First Aid: Tourniquet", focus: "Trauma Management", tasks: [
+        { cat: "First Aid", text: "Tourniquet application practice: Self-apply CAT/SOFT-T to left arm, right arm, left leg under 15s." },
+        { cat: "Conditioning", text: "4-mile walk with 25 lb backpack." },
+        { cat: "Combat", text: "3 rounds shadowboxing combining Jab-Cross-Low Kick." }
+      ]},
+      { day: 7, week: 1, phase: "Week 1: Foundation", title: "Active Recovery", focus: "Mobility & System Audit", tasks: [
+        { cat: "Conditioning", text: "20 minutes full-body tactical mobility & hip/shoulder decompression." },
+        { cat: "Mindset", text: "Weekly Review: Log physical pain points, weak mechanics, and gear shortcomings." }
+      ]},
+
+      // WEEK 2: COMBINATION
+      { day: 8, week: 2, phase: "Week 2: Combination", title: "Punches to Takedowns", focus: "Level Changes & Transitions", tasks: [
+        { cat: "Combat", text: "Jab-Cross to Double Leg entry drills. 50 entries." },
+        { cat: "Conditioning", text: "HIIT: 10 sets of 30-sec sprint / 30-sec walk." },
+        { cat: "First Aid", text: "Review Wound Packing techniques for junctional trauma (groin/armpit)." }
+      ]},
+      { day: 9, week: 2, phase: "Week 2: Combination", title: "Land Navigation: Azimuths", focus: "Compass & Pace Count", tasks: [
+        { cat: "Navigation", text: "Establish your 100m pace count (flat terrain vs slope). Practice taking 3 compass azimuths." },
+        { cat: "Conditioning", text: "4 Rounds: 15 push-ups, 15 ring/doorway rows, 1-min plank." },
+        { cat: "Mindset", text: "Observe baseline behavior in a crowded space; identify anomalous behaviors." }
+      ]},
+      { day: 10, week: 2, phase: "Week 2: Combination", title: "Clinched Combat", focus: "Thai Clinch & Knees", tasks: [
+        { cat: "Combat", text: "Plum clinch control + straight/curved knee strikes. 100 knees total." },
+        { cat: "Conditioning", text: "Bodyweight Complex: 50 Squats, 40 Sit-ups, 30 Push-ups, 20 Burpees, 10 Pull-ups." },
+        { cat: "Survival Prep", text: "Assemble/Review personal 72-hour Bug-Out Bag gear inventory." }
+      ]},
+      { day: 11, week: 2, phase: "Week 2: Combination", title: "Escapes & Ground Up", focus: "Bottom Position Escapes", tasks: [
+        { cat: "Combat", text: "Hip escape (shrimping) and technical stand-up. 50 reps each." },
+        { cat: "Conditioning", text: "30-minute rucksack march with 30 lbs." },
+        { cat: "Mindset", text: "Stress inoculation: Perform 20 burpees then immediately execute precision knot tying." }
+      ]},
+      { day: 12, week: 2, phase: "Week 2: Combination", title: "Trauma Protocols", focus: "Airway & Respiration", tasks: [
+        { cat: "First Aid", text: "Study Recovery Position, Chest Seals, and managing Tension Pneumothorax." },
+        { cat: "Conditioning", text: "5 Rounds: 20 Kettlebell/Dumbbell swings, 15 Push-ups, 15 Jump Squats." },
+        { cat: "Combat", text: "Shadowbox 4 x 2-minute rounds incorporating defense and counter-strikes." }
+      ]},
+      { day: 13, week: 2, phase: "Week 2: Combination", title: "Improvised Weapons", focus: "Environment Utilization", tasks: [
+        { cat: "Combat", text: "Identify & practice striking mechanics using everyday objects (flashlight, tactical pen)." },
+        { cat: "Conditioning", text: "Core focus: 100 bicycle crunches, 50 plank-jacks, 3-min total side planks." },
+        { cat: "Navigation", text: "Practice dead reckoning planning for a 3-mile route." }
+      ]},
+      { day: 14, week: 2, phase: "Week 2: Combination", title: "Active Recovery", focus: "Rest & Hydration Maintenance", tasks: [
+        { cat: "Conditioning", text: "15 minutes light foam rolling & targeted hamstring/hip flexor stretches." },
+        { cat: "First Aid", text: "Time yourself accessing and deploying your medical kit with eyes closed." }
+      ]},
+
+      // WEEK 3: PRESSURE
+      { day: 15, week: 3, phase: "Week 3: Pressure", title: "Fatigue Striking", focus: "Form Maintenance Under Exhaustion", tasks: [
+        { cat: "Combat", text: "Max intensity 1-minute round striking + 30-sec sprint. Repeat for 5 rounds." },
+        { cat: "Conditioning", text: "100 Burpees for time." },
+        { cat: "Mindset", text: "Acknowledge panic triggers; execute box breathing under high heart rate." }
+      ]},
+      { day: 16, week: 3, phase: "Week 3: Pressure", title: "Night Navigation & Light", focus: "Low-Light Operations", tasks: [
+        { cat: "Navigation", text: "Night navigation drill: Move 1 mile using map/compass with minimal red-light usage." },
+        { cat: "Conditioning", text: "4-mile weighted ruck (35 lbs)." },
+        { cat: "Combat", text: "Practice blind/low-light strike indexing from defensive stance." }
+      ]},
+      { day: 17, week: 3, phase: "Week 3: Pressure", title: "Multiple Threat Concept", focus: "Positioning & Footwork", tasks: [
+        { cat: "Combat", text: "L-cut and angle movement drills to keep multiple targets lined up. 15 minutes." },
+        { cat: "Conditioning", text: "5 Rounds: 15 Overhead presses, 15 Renegade rows, 30 Mountain climbers." },
+        { cat: "Survival Prep", text: "Water purification protocols: Practice filtration, boiling, and chemical dosing." }
+      ]},
+      { day: 18, week: 3, phase: "Week 3: Pressure", title: "Hypothermia & Climate", focus: "Environmental Survival", tasks: [
+        { cat: "First Aid", text: "Study hypothermia/heatstroke mitigation, shelter building principles, and thermal layering." },
+        { cat: "Conditioning", text: "Cold shower commitment: 3 minutes uninterrupted cold water post-workout." },
+        { cat: "Combat", text: "3 rounds shadowboxing with focus on rapid level changes." }
+      ]},
+      { day: 19, week: 3, phase: "Week 3: Pressure", title: "Choke Defenses", focus: "Grappling Survival", tasks: [
+        { cat: "Combat", text: "Front guillotine and rear-naked choke escape mechanics. 30 reps each." },
+        { cat: "Conditioning", text: "5 Rounds: 20 Weighted lunges, 15 Dips, 1-min Plank." },
+        { cat: "Mindset", text: "Conduct a home security audit: Check entry points, lighting, and blind spots." }
+      ]},
+      { day: 20, week: 3, phase: "Week 3: Pressure", title: "Full Stress Circuit", focus: "Cross-Discipline Output", tasks: [
+        { cat: "Conditioning", text: "Complete 3 miles carrying a 30 lb pack; stop every 0.5 miles to do 20 push-ups & 20 squats." },
+        { cat: "First Aid", text: "Execute one-handed tourniquet application immediately upon finish." },
+        { cat: "Combat", text: "Finish with 2 minutes shadowboxing at max pace." }
+      ]},
+      { day: 21, week: 3, phase: "Week 3: Pressure", title: "Active Recovery", focus: "System Decompression", tasks: [
+        { cat: "Conditioning", text: "20-minute soft tissue work (massage gun or foam roller) and joint mobility." },
+        { cat: "Mindset", text: "Mental recap: Assess decision-making quality when fatigued." }
+      ]},
+
+      // WEEK 4: MASTERY
+      { day: 22, week: 4, phase: "Week 4: Mastery", title: "Weapon Disarms & Retention", focus: "Close Quarters Control", tasks: [
+        { cat: "Combat", text: "Edged weapon awareness drills & wrist control concepts. 50 reps." },
+        { cat: "Conditioning", text: "4 Rounds: 12 Chin-ups, 20 Kettlebell swings, 15 Handstand push-ups (or pike push-ups)." },
+        { cat: "Mindset", text: "Third-party protection positioning walk-throughs." }
+      ]},
+      { day: 23, week: 4, phase: "Week 4: Mastery", title: "Advanced Navigation", focus: "Route Planning & Terrain", tasks: [
+        { cat: "Navigation", text: "Plan a complex 5-mile off-grid route using terrain association & handrails." },
+        { cat: "Conditioning", text: "5-mile tempo run." },
+        { cat: "First Aid", text: "Simulate treating a compound fracture using improvised splints." }
+      ]},
+      { day: 24, week: 4, phase: "Week 4: Mastery", title: "Ground Control Mastery", focus: "Dominant Positions", tasks: [
+        { cat: "Combat", text: "Mount and Back Control maintenance drills. Transition flows (30 mins)." },
+        { cat: "Conditioning", text: "300 Bodyweight Squats for time." },
+        { cat: "Survival Prep", text: "Signaling & Emergency Comms: Review HAM/GMRS frequencies and signal mirror use." }
+      ]},
+      { day: 25, week: 4, phase: "Week 4: Mastery", title: "Tactical Assessment", focus: "Full Skills Integration", tasks: [
+        { cat: "Combat", text: "5 x 3-minute Shadowboxing rounds covering all strikes, slips, takedowns, and escapes." },
+        { cat: "Conditioning", text: "Murph Light: 800m run, 50 pull-ups, 100 push-ups, 150 squats, 800m run." },
+        { cat: "Mindset", text: "Assess situational threats in real-time during daily transit." }
+      ]},
+      { day: 26, week: 4, phase: "Week 4: Mastery", title: "Mass Casualty First Aid", focus: "Triage & Prioritization", tasks: [
+        { cat: "First Aid", text: "Study START Triage system. Practice prioritizing multiple simulated patients under time limit." },
+        { cat: "Conditioning", text: "40-minute weighted ruck march (40 lbs)." },
+        { cat: "Combat", text: "Heavy bag or shadowboxing power-strike combinations (100 total strikes)." }
+      ]},
+      { day: 27, week: 4, phase: "Week 4: Mastery", title: "Counter-Surveillance", focus: "Evasion & Detection", tasks: [
+        { cat: "Mindset", text: "Execute a route with 3 planned stops to detect if you are being followed (surveillance detection route)." },
+        { cat: "Conditioning", text: "Core Destruction: 5 rounds of 1-min plank, 30 flutter kicks, 20 Russian twists." },
+        { cat: "Navigation", text: "Identify urban landmarks without digital GPS reliance." }
+      ]},
+      { day: 28, week: 4, phase: "Week 4: Mastery", title: "Active Recovery", focus: "Pre-Culmination Prep", tasks: [
+        { cat: "Conditioning", text: "Full body active recovery, light walk, hydration load, and meal prep." },
+        { cat: "Survival Prep", text: "Final inspection of all emergency packs and trauma kits." }
+      ]},
+      { day: 29, week: 4, phase: "Week 4: Mastery", title: "Culminating Test Part I", focus: "Physical & Tactical Benchmark", tasks: [
+        { cat: "Conditioning", text: "Benchmark Test: Max Push-ups (2 mins), Max Sit-ups (2 mins), 3-mile run for time." },
+        { cat: "Combat", text: "100 burpee-to-strike combinations." },
+        { cat: "First Aid", text: "Self-apply TQ while under 140+ BPM heart rate in < 12 seconds." }
+      ]},
+      { day: 30, week: 4, phase: "Week 4: Mastery", title: "Culminating Test Part II", focus: "Final Evaluation & Operator Status", tasks: [
+        { cat: "Navigation", text: "Complete a 6-mile land navigation or rucking course with 35 lb pack." },
+        { cat: "Mindset", text: "Execute comprehensive situational awareness log & post-program evaluation." },
+        { cat: "Combat", text: "Final 5-round integration shadowbox session." }
+      ]}
+    ];
+
+    // STATE MANAGEMENT
+    let currentDayIndex = 0;
+    let userProgress = {};
+
+    function initApp() {
+      loadLocalStorage();
+      renderCalendar();
+      loadDay(currentDayIndex);
+      updateOverallProgress();
+    }
+
+    function loadLocalStorage() {
+      const savedProgress = localStorage.getItem('tactical_prog_data');
+      if (savedProgress) {
+        userProgress = JSON.parse(savedProgress);
+      } else {
+        programData.forEach(d => {
+          userProgress[d.day] = { completed: false, tasks: {} };
+        });
+        saveLocalStorage();
+      }
+
+      const savedDay = localStorage.getItem('tactical_prog_current_day');
+      if (savedDay !== null) {
+        currentDayIndex = parseInt(savedDay, 10);
+      }
+    }
+
+    function saveLocalStorage() {
+      localStorage.setItem('tactical_prog_data', JSON.stringify(userProgress));
+      localStorage.setItem('tactical_prog_current_day', currentDayIndex);
+    }
+
+    function renderCalendar() {
+      const grid = document.getElementById('calendar-grid');
+      grid.innerHTML = '';
+
+      programData.forEach((d, idx) => {
+        const btn = document.createElement('button');
+        btn.className = 'day-btn';
+        btn.innerText = `D${d.day}`;
+        
+        if (idx === currentDayIndex) btn.classList.add('active');
+        if (userProgress[d.day] && userProgress[d.day].completed) {
+          btn.classList.add('completed');
+        }
+
+        btn.onclick = () => {
+          currentDayIndex = idx;
+          saveLocalStorage();
+          renderCalendar();
+          loadDay(currentDayIndex);
+        };
+
+        grid.appendChild(btn);
+      });
+    }
+
+    function loadDay(index) {
+      const data = programData[index];
+      document.getElementById('day-phase').innerText = data.phase;
+      document.getElementById('day-title').innerText = `Day ${data.day}: ${data.title}`;
+      document.getElementById('day-focus').innerText = `Focus: ${data.focus}`;
+
+      const container = document.getElementById('tasks-container');
+      container.innerHTML = '';
+
+      const dayState = userProgress[data.day] || { completed: false, tasks: {} };
+
+      data.tasks.forEach((task, tIdx) => {
+        const isChecked = dayState.tasks && dayState.tasks[tIdx];
+
+        const taskEl = document.createElement('div');
+        taskEl.className = `task-item ${isChecked ? 'completed' : ''}`;
+        
+        taskEl.innerHTML = `
+          <input type="checkbox" id="task-${tIdx}" ${isChecked ? 'checked' : ''} onchange="toggleTask(${data.day}, ${tIdx})">
+          <label class="task-label" for="task-${tIdx}">
+            <div class="task-category">${task.cat}</div>
+            <div>${task.text}</div>
+          </label>
+        `;
+        
+        taskEl.onclick = (e) => {
+          if (e.target.tagName !== 'INPUT' && e.target.tagName !== 'LABEL') {
+            const cb = taskEl.querySelector('input');
+            cb.checked = !cb.checked;
+            toggleTask(data.day, tIdx);
+          }
+        };
+
+        container.appendChild(taskEl);
+      });
+
+      updateCompleteButtonState(data.day);
+    }
+
+    function toggleTask(dayNum, taskIdx) {
+      if (!userProgress[dayNum]) {
+        userProgress[dayNum] = { completed: false, tasks: {} };
+      }
+      if (!userProgress[dayNum].tasks) {
+        userProgress[dayNum].tasks = {};
+      }
+
+      const currentState = !!userProgress[dayNum].tasks[taskIdx];
+      userProgress[dayNum].tasks[taskIdx] = !currentState;
+
+      const dayData = programData.find(d => d.day === dayNum);
+      const allTasksDone = dayData.tasks.every((_, idx) => userProgress[dayNum].tasks[idx]);
+      userProgress[dayNum].completed = allTasksDone;
+
+      saveLocalStorage();
+      renderCalendar();
+      loadDay(currentDayIndex);
+      updateOverallProgress();
+    }
+
+    function toggleCompleteDay() {
+      const dayNum = programData[currentDayIndex].day;
+      const currentState = userProgress[dayNum] ? userProgress[dayNum].completed : false;
+      const newState = !currentState;
+
+      if (!userProgress[dayNum]) {
+        userProgress[dayNum] = { completed: newState, tasks: {} };
+      } else {
+        userProgress[dayNum].completed = newState;
+      }
+
+      programData[currentDayIndex].tasks.forEach((_, idx) => {
+        userProgress[dayNum].tasks[idx] = newState;
+      });
+
+      if (newState && currentDayIndex < programData.length - 1) {
+        currentDayIndex++;
+      }
+
+      saveLocalStorage();
+      renderCalendar();
+      loadDay(currentDayIndex);
+      updateOverallProgress();
+    }
+
+    function updateCompleteButtonState(dayNum) {
+      const btn = document.getElementById('complete-day-btn');
+      const isCompleted = userProgress[dayNum] && userProgress[dayNum].completed;
+
+      if (isCompleted) {
+        btn.innerText = "Day Completed ✓ (Click to Undo)";
+        btn.classList.add('completed-state');
+      } else {
+        btn.innerText = "Complete Day & Advance";
+        btn.classList.remove('completed-state');
+      }
+    }
+
+    function updateOverallProgress() {
+      let completedDays = 0;
+      programData.forEach(d => {
+        if (userProgress[d.day] && userProgress[d.day].completed) {
+          completedDays++;
+        }
+      });
+
+      const percentage = Math.round((completedDays / programData.length) * 100);
+      document.getElementById('progress-text').innerText = `Day ${currentDayIndex + 1} of 30 — ${completedDays} Completed`;
+      document.getElementById('progress-percent').innerText = `${percentage}% Complete`;
+      document.getElementById('progress-fill').style.width = `${percentage}%`;
+    }
+
+    // TIMER SYSTEM
+    let timerInterval = null;
+    let timerSeconds = 120;
+    let timerRunning = false;
+
+    function setTimer(seconds) {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      timerSeconds = seconds;
+      updateTimerDisplay();
+      document.getElementById('timer-start-btn').innerText = 'Start';
+    }
+
+    function updateTimerDisplay() {
+      const mins = Math.floor(timerSeconds / 60);
+      const secs = timerSeconds % 60;
+      document.getElementById('timer-display').innerText = 
+        `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    }
+
+    function toggleTimer() {
+      if (timerRunning) {
+        clearInterval(timerInterval);
+        timerRunning = false;
+        document.getElementById('timer-start-btn').innerText = 'Start';
+      } else {
+        timerRunning = true;
+        document.getElementById('timer-start-btn').innerText = 'Pause';
+        timerInterval = setInterval(() => {
+          if (timerSeconds > 0) {
+            timerSeconds--;
+            updateTimerDisplay();
+          } else {
+            clearInterval(timerInterval);
+            timerRunning = false;
+            document.getElementById('timer-start-btn').innerText = 'Start';
+            alert('Timer Complete!');
+          }
+        }, 1000);
+      }
+    }
+
+    function resetTimer() {
+      clearInterval(timerInterval);
+      timerRunning = false;
+      timerSeconds = 120;
+      updateTimerDisplay();
+      document.getElementById('timer-start-btn').innerText = 'Start';
+    }
+
+    function resetAllProgress() {
+      if (confirm("Are you sure you want to reset all tactical training progress? This action cannot be undone.")) {
+        localStorage.removeItem('tactical_prog_data');
+        localStorage.removeItem('tactical_prog_current_day');
+        currentDayIndex = 0;
+        userProgress = {};
+        initApp();
+      }
+    }
+
+    window.onload = initApp;
+  </script>
+</body>
+</html>
